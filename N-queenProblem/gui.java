@@ -72,22 +72,47 @@ public class temp extends JFrame {
 		
 		controlPanel.add(box);
 		
-		JPanel gamePanel = new JPanel(new GridLayout(5,5));
-		gamePanel.setBackground(background);
-		gamePanel.setBorder(BorderFactory.createEmptyBorder(100,100,100,100));
+		int numOfRows = (Integer)spinner.getValue(), numOfCols = numOfRows++; 
 		
-		for(int i = 0; i < 25; ++i)
+		JPanel gamePanel = new JPanel(new GridLayout(numOfRows, numOfCols));
+		gamePanel.setBackground(background);
+		gamePanel.setBorder(BorderFactory.createEmptyBorder(5,120,120,120));
+		
+		
+		for(int i = 0; i < numOfRows; ++i)
 		{
-			JPanel temp = new JPanel();
-			if(i % 2 == 0)
+			
+			for(int j = 0; j < numOfCols; ++j)
 			{
-				temp.setBackground(white);
+				JPanel temp = new JPanel();
+				if(i == 0)
+				{
+					ImageIcon imageIcon = new ImageIcon("pic3.png"); // load the image to a imageIcon
+					Image image = imageIcon.getImage(); // transform it 
+					Image newimg = image.getScaledInstance(740 / numOfRows, 740 / numOfCols,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+					imageIcon = new ImageIcon(newimg);
+					
+					JLabel t = new JLabel(imageIcon);
+					temp.add(t);
+					temp.setBackground(background);
+				}
+				else
+				{
+					boolean isItWhite = ((i-1) % 2 == 0) == (j % 2 == 0);
+					if(isItWhite)
+					{
+						System.out.println("white " + i + " " + j);
+						temp.setBackground(white);
+						
+					}
+					else
+					{
+						System.out.println("black " + i + " " + j);
+						temp.setBackground(darkBlue);
+					}
+				}
+				gamePanel.add(temp);
 			}
-			else
-			{
-				temp.setBackground(darkBlue);
-			}
-			gamePanel.add(temp);
 		}
 		
 		add(controlPanel, BorderLayout.EAST);
@@ -95,6 +120,8 @@ public class temp extends JFrame {
 		pack();
 		this.setSize(width, height);
 		this.setLocation((originW - width)/2, (originH - height)/2);
+		System.out.println("size " + controlPanel.getSize());
+		System.out.println("size " + gamePanel.getSize());
     }
 	
 	private void initialize() {
